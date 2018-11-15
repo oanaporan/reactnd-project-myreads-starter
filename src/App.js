@@ -24,7 +24,9 @@ class BooksApp extends React.Component {
             </div>
           </div>
       <ListShelves />
-      {/* <Search /> */}
+      <div className="open-search">
+            <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+          </div>
       </div>
     )
   }
