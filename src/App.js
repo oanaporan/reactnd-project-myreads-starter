@@ -1,4 +1,6 @@
 import React from 'react'
+import Router from 'react-router-dom'
+
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import ListShelves from './ListShelves'
@@ -6,7 +8,8 @@ import Search from './Search'
 
 class BooksApp extends React.Component {
   state = {
-    books : []
+    books : [],
+    newBook : false
     /**
      * TODO: Instead of using this state variable to keep track of which page
      * we're on, use the URL in the browser's address bar. This will ensure that
@@ -20,7 +23,8 @@ class BooksApp extends React.Component {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
   })
-}
+
+  }
 
   render() {
     return (
