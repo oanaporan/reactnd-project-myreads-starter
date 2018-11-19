@@ -3,12 +3,15 @@ import React, { Component } from 'react'
 import Book from './Book'
 
 class Shelf extends Component {
-    state = {}
+    state = {
+        books: this.props.books
+
+    }
 
     render() {
         return(
-            <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
+            <div>
+                  <h2 className="bookshelf-title">{this.props.shelf.name}</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                     {this.props.shelf.books.map(book => (
