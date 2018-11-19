@@ -4,8 +4,6 @@ import Book from './Book'
 
 class Shelf extends Component {
     state = {
-        books: this.props.books
-
     }
 
     render() {
