@@ -5,11 +5,13 @@ class Book extends Component {
     state ={}
 
     render() {
-        let { authors, imageLinks, title } = this.props.book;
+        let url = (this.props.book.imageLinks && `url(${this.props.book.imageLinks.thumbnail})`);
+        const { authors, title } = this.props.book;
+        
         return(
                 <div className="book">
                     <div className="book-top">
-                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: imageLinks.thumbnail }}>
+                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: url }}>
                             </div>
                         <ChangeShelf />
                         </div>
