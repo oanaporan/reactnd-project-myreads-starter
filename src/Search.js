@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
 
-import * as BooksAPI from './BooksAPI' 
 import Book from './Book'
 
 
@@ -26,6 +25,8 @@ class Search extends Component {
       } else {
         showingBooks = this.props.books
       }
+
+      showingBooks.sort(sortBy('title'))
 
 
         return(
