@@ -1,22 +1,41 @@
 import React, { Component } from 'react'
-import sortBy from 'sort-by'
+
 import { Link } from 'react-router-dom'
+import escapeRegExp from 'escape-string-regexp'
+import sortBy from 'sort-by'
+
+import * as BooksAPI from './BooksAPI' 
+import Book from './Book'
 
 
 class Search extends Component {
     state = {
-      query: ''
+      query: '',
+      books: []
     }
 
     updateQuery = (query) => {
       this.setState({ query: query.trim() })
     }
 
-    clearQuery = (query) => {
-      this.setState({ query: ''})
-    }
+    componentDidMount() {
+      BooksAPI.getAll().then((books) => {
+        this.setState({ books })
+    })
+  }
+
 
     render() {
+      let showingBooks 
+      if (this.state.query) {
+        const match = new RegExp(escapeRegExp(this.state.query), 'i') 
+        showingBooks = this.state.books.filter((book) => match.test(book.title));
+
+      } else {
+        showingBooks = this.state.books
+      }
+
+
         return(
             <div className="search-books">
             <div className="search-books-bar">
@@ -30,16 +49,25 @@ class Search extends Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
+                <input type="text" placeholder="Search by title or author" value={this.state.query} onChange={(event) => this.updateQuery(event.target.value)} />
 
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+              {showingBooks.map(book => (
+                        <li key={book.id}>
+                        <Book book={book} />
+                        </li>
+                        ))}
+              </ol>
             </div>
           </div>
         )
     }
-}
+  }
 
-export default Search;
+
+
+
+export default Search
