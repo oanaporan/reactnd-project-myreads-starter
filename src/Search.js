@@ -1,29 +1,53 @@
 import React, { Component } from 'react'
-
 import { Link } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
 
+import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 
 
 class Search extends Component {
     state = {
       query: '',
+      books: []
     }
 
     updateQuery = (query) => {
       this.setState({ query: query.trim() })
     }
 
+    updateSearch = () => {
+      BooksAPI.search(this.state.query).then(response => {
+        let listBooks = [];
+        let newError = false;
+
+        if (response === undefined || (response.error && response.error !== "empty query")) {
+          newError: true;
+        } else if (response.length) {
+          listBooks = response.concat(this.props.booksOnShelves);
+        }
+        this.setState({ error: newError, books: listBooks});
+      })
+    }
+
+    componentWillReceiveProps = (props) => {
+      this.props = props;
+      let searchedBooks = this.updateSearch();
+      this.setState({ books: searchedBooks })
+
+    }
+
+
+
     render() {
       let showingBooks 
       if (this.state.query) {
         const match = new RegExp(escapeRegExp(this.state.query), 'i') 
-        showingBooks = this.props.books.filter((book) => match.test(book.title));
+        showingBooks = this.state.books.filter((book) => match.test(book.title));
 
       } else {
-        showingBooks = this.props.books
+        showingBooks = this.state.books
       }
 
       showingBooks.sort(sortBy('title'))
