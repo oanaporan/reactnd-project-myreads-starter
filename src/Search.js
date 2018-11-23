@@ -11,28 +11,20 @@ import Book from './Book'
 class Search extends Component {
     state = {
       query: '',
-      books: []
     }
 
     updateQuery = (query) => {
       this.setState({ query: query.trim() })
     }
 
-    componentDidMount() {
-      BooksAPI.getAll().then((books) => {
-        this.setState({ books })
-    })
-  }
-
-
     render() {
       let showingBooks 
       if (this.state.query) {
         const match = new RegExp(escapeRegExp(this.state.query), 'i') 
-        showingBooks = this.state.books.filter((book) => match.test(book.title));
+        showingBooks = this.props.books.filter((book) => match.test(book.title));
 
       } else {
-        showingBooks = this.state.books
+        showingBooks = this.props.books
       }
 
 
