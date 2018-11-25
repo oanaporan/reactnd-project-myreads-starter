@@ -9,7 +9,7 @@ class ListShelves extends Component {
     state = {
         books: []
     }
-
+//Display shelves with array of books
     updateShelves = () => {
         const newCurrentlyReading = {
             name: "Currently Reading",
