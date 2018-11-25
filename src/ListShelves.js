@@ -21,7 +21,7 @@ class ListShelves extends Component {
         }
         const newRead = {
             name: "Read",
-            books: this.props.books.filter(book => book.title === 'read')
+            books: this.props.books.filter(book => book.shelf === 'read')
         }
         return ([newCurrentlyReading, newWantToRead, newRead]);
 
