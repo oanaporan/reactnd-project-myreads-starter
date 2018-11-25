@@ -17,40 +17,40 @@ class Search extends Component {
       this.setState({ query: query.trim() })
     }
 
-    updateSearch = () => {
-      BooksAPI.search(this.state.query).then(response => {
-        let listBooks = [];
-        let newError = false;
+    // updateSearch = () => {
+    //   BooksAPI.search(this.state.query).then(response => {
+    //     let listBooks = [];
+    //     let newError = false;
 
-        if (response === undefined || (response.error && response.error !== "empty query")) {
-          newError: true;
-        } else if (response.length) {
-          listBooks = response.concat(this.props.booksOnShelves);
-        }
-        this.setState({ error: newError, books: listBooks});
-      })
-    }
+    //     if (response === undefined || (response.error && response.error !== "empty query")) {
+    //       newError: true;
+    //     } else if (response.length) {
+    //       listBooks = response.concat(this.props.booksOnShelves);
+    //     }
+    //     this.setState({ error: newError, books: listBooks});
+    //   })
+    // }
 
-    componentWillReceiveProps = (props) => {
-      this.props = props;
-      let searchedBooks = this.updateSearch();
-      this.setState({ books: searchedBooks })
+    // componentWillReceiveProps = (props) => {
+    //   this.props = props;
+    //   let searchedBooks = this.updateSearch();
+    //   this.setState({ books: searchedBooks })
 
-    }
+    // }
 
 
 
     render() {
-      let showingBooks 
-      if (this.state.query) {
-        const match = new RegExp(escapeRegExp(this.state.query), 'i') 
-        showingBooks = this.state.books.filter((book) => match.test(book.title));
+      // let showingBooks 
+      // if (this.state.query) {
+      //   const match = new RegExp(escapeRegExp(this.state.query), 'i') 
+      //   showingBooks = this.state.books.filter((book) => match.test(book.title));
 
-      } else {
-        showingBooks = this.state.books
-      }
+      // } else {
+      //   showingBooks = this.state.books
+      // }
 
-      showingBooks.sort(sortBy('title'))
+      // showingBooks.sort(sortBy('title'))
 
 
         return(
@@ -72,7 +72,7 @@ class Search extends Component {
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-              {showingBooks.map(book => (
+              {this.props.books.map(book => (
                         <li key={book.id}>
                         <Book book={book} />
                         </li>

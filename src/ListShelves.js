@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
+import * as BooksAPI from './BooksAPI'
 
 import Shelf from './Shelf'
 
 
 class ListShelves extends Component {
     state = {
+        books: []
     }
 
     updateShelves = () => {
@@ -25,6 +27,24 @@ class ListShelves extends Component {
 
     }
 
+    changeShelves = (book, shelf) => {
+        BooksAPI.update(book, shelf).then(response => {
+            //Make a copy of the list of books on shelves
+            let booksOnShelves = this.props.books.slice(0);
+            //Check if the selected book is already in array
+            const selectedBooks = booksOnShelves.filter(bookOnShelves => bookOnShelves.id === book.id);
+            //If the book is on shelf update it
+            if(selectedBooks.length) {
+                selectedBooks[0].shelf = shelf;
+            } else {
+                //Add the new book to the selected shelf
+                booksOnShelves.push(book);
+            }
+            //set state with the new array of books
+            this.setState({ books: booksOnShelves })
+        })
+    }
+
     render() {
 
         let shelves = [];
@@ -38,7 +58,7 @@ class ListShelves extends Component {
             <div className="list-books-content">
                 <div className="bookshelf">
                 {shelves && shelves.map((shelf) => (
-                    <Shelf key={shelf.name} shelf={shelf} 
+                    <Shelf key={shelf.name} shelf={shelf} onChangeShelves={this.changeShelves}
                     />))}
                 </div>
             </div>
