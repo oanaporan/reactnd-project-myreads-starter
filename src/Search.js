@@ -10,29 +10,32 @@ import Book from './Book'
 class Search extends Component {
     state = {
       query: '',
-      books: [],
       searchResults: []
     }
 
-    // componentDidMount() {
-    //   BooksAPI.getAll().then((books) => {
-    //     this.setState({ books })
-    //   })
-    // }
+    updateQuery = (query) => {
+      this.setState({ query: query.trim()}, this.searchBooks);
+    }
 
-    // searchBooks = () => {
-
-    // }
-
-
-    
-
-
-
-    // updateQuery = (query) => {
-    //   this.setState({ query: query.trim() })
-    // }
-  
+   searchBooks = () => {
+     //Don't search on empty query && undefined 
+     if (this.state.query === "" || this.state.query === undefined) {
+       this.setState({ searchBooks: []})
+     }
+     BooksAPI.search(this.state.query).then(response => {
+       if(response.error) {
+         this.setState({ searchResults: []})
+       } else {
+         response.forEach(books => {
+           let list = this.props.books.filter(l => l.id === books.id);
+           if (list[0]) {
+             books.shelf = books[0].shelf
+           };
+         })
+         this.setState({ searchResults: response })
+       }
+     });
+   }
 
 
 
@@ -56,11 +59,11 @@ class Search extends Component {
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-              {/* {this.props.books.map(book => (
+              {this.state.searchResults.map(book => (
                         <li key={book.id}>
                         <Book book={book} />
                         </li>
-                        ))} */}
+                        ))}
               </ol>
             </div>
           </div>
