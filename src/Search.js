@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
 
 import * as BooksAPI from './BooksAPI'
@@ -14,25 +13,25 @@ class Search extends Component {
     }
 
     updateQuery = (query) => {
-      this.setState({ query: query.trim()}, this.searchBooks);
+      this.setState({ query: query}, this.searchBooks);
     }
 
    searchBooks = () => {
      //Don't search on empty query && undefined 
-     if (this.state.query === "" || this.state.query === undefined) {
-       this.setState({ searchBooks: []})
+     if (this.state.query === '' || this.state.query === undefined) {
+       this.setState({ searchResults:[]});
      }
-     BooksAPI.search(this.state.query).then(response => {
+     BooksAPI.search(this.state.query.trim()).then(response => {
        if(response.error) {
-         this.setState({ searchResults: []})
+          this.setState({ searchResults: [] });
        } else {
          response.forEach(books => {
            let list = this.props.books.filter(l => l.id === books.id);
            if (list[0]) {
-             books.shelf = books[0].shelf
+             books.shelf = list[0].shelf
            };
          })
-         this.setState({ searchResults: response })
+         this.setState({ searchResults: response.sort(sortBy('title')) })
        }
      });
    }
@@ -62,7 +61,7 @@ class Search extends Component {
               <ol className="books-grid">
               {this.state.searchResults.map(book => (
                         <li key={book.id}>
-                        <Book book={book} />
+                        <Book book={book} onChangeShelves={this.props.onChangeShelves}/>
                         </li>
                         ))}
               </ol>

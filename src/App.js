@@ -49,7 +49,7 @@ changeShelves = (book, shelf) => {
 
           <Route exact path='/search'
           render={() => (
-            <Search books={this.state.books} onChangeShelves={this.changeShelves}/>
+            <Search books={this.state.books} shelf={this.state.books.shelf} onChangeShelves={this.changeShelves}/>
           )} />
 
      </div>      
