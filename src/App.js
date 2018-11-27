@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-
 import * as BooksAPI from './BooksAPI'
+
 import './App.css'
 import ListShelves from './ListShelves'
 import Search from './Search'
@@ -19,7 +19,6 @@ class BooksApp extends React.Component {
   })
 
   }
-
 
 changeShelves = (book, shelf) => {
     BooksAPI.update(book, shelf).then(response => {
@@ -50,7 +49,7 @@ changeShelves = (book, shelf) => {
 
           <Route exact path='/search'
           render={() => (
-            <Search booksOnShelves={this.state.books} onChangeShelves={this.changeShelves}/>
+            <Search books={this.state.books} onChangeShelves={this.changeShelves}/>
           )} />
 
      </div>      
