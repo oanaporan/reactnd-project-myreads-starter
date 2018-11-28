@@ -17,13 +17,14 @@ class Search extends Component {
     }
 
    searchBooks = () => {
-     //Don't search on empty query && undefined 
+    //If query is empty or undefined return empty array of books.
      if (this.state.query === '' || this.state.query === undefined) {
-       this.setState({ searchResults:[]});
+        return this.setState({ searchResults:[]});
+       
      }
      BooksAPI.search(this.state.query.trim()).then(response => {
        if(response.error) {
-          this.setState({ searchResults: [] });
+          return this.setState({ searchResults: [] });
        } else {
          response.forEach(books => {
            let list = this.props.books.filter(l => l.id === books.id);
@@ -31,7 +32,7 @@ class Search extends Component {
              books.shelf = list[0].shelf
            };
          })
-         this.setState({ searchResults: response.sort(sortBy('title')) })
+         return this.setState({ searchResults: response.sort(sortBy('title')) })
        }
      });
    }
