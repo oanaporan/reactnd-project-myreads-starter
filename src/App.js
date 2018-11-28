@@ -21,22 +21,14 @@ class BooksApp extends React.Component {
   }
 
 changeShelves = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(response => {
-        //Make a copy of the list of books on shelves
-        let booksOnShelves = this.state.books.slice(0);
-        //Check if the selected book is already in array
-        const selectedBooks = booksOnShelves.filter(bookOnShelves => bookOnShelves.id === book.id);
-        //If the book is on shelf update it
-        if(selectedBooks.length) {
-            selectedBooks[0].shelf = shelf;
-        } else {
-            //Add the new book to the selected shelf
-            booksOnShelves.push(book);
-        }
-        //set state with the new array of books
-        this.setState({ books: booksOnShelves })
-    })
-}
+    BooksAPI.update(book, shelf ).then(response => {
+      book.shelf = shelf;
+      this.setState(state => ({
+        books: state.books.filter(b => b.id !== book.id).concat([book])
+      }));
+    });
+  }
+    
 
   render() {
 
